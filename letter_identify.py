@@ -149,8 +149,8 @@ def accuracy(x, y, theta):
         answer = y[i]
         if np.argmax(pred) == np.argmax(answer):
             correct_number += 1
-    oomakanumber = round((correct_number/m)*100, 4)
-    return oomakanumber
+    percent = round((correct_number/m)*100, 4)
+    return percent
 
 
 
@@ -159,7 +159,7 @@ mat_path = os.path.join(dir_path, "ex4data1.mat")
 
 outputs = 10 #出力ノード数
 lam = 0.1
-training_set_number = 5000 #データセット5000個の内、トレーニングに使うデータ数
+training_set_number = 1000 #データセット5000個の内、トレーニングに使うデータ数
 theta_list = make_theta(outputs) #theta 初期化
 
 X = (scipy.io.loadmat(mat_path)["X"])
