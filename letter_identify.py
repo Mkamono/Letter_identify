@@ -104,7 +104,7 @@ def Backpropagation(x,y,theta,lam, training_set_number):
             
             print(f"{iter} th Cost = ", J)
             if iter % 10 == 0:
-                print("training_accuracy = ", acc, "%", "  test_accurancy = ", test_acc, "%")
+                print("training_accuracy = ", acc, "%", "\ntest_accurancy = ", test_acc, "%")
                 end = time.time()
                 print("経過時間 = ", round((end-start), 2), "秒")
             iter += 1
@@ -157,14 +157,10 @@ def accuracy(x, y, theta):
 dir_path = os.path.dirname(__file__)
 mat_path = os.path.join(dir_path, "ex4data1.mat")
 
-outputs = 10 #アウトプット
+outputs = 10 #出力ノード数
 lam = 0.1
-training_set_number = 4000
-
-
-
-if "theta_list" not in globals():
-    theta_list = make_theta(outputs) #theta 初期化
+training_set_number = 5000 #データセット5000個の内、トレーニングに使うデータ数
+theta_list = make_theta(outputs) #theta 初期化
 
 X = (scipy.io.loadmat(mat_path)["X"])
 y_label = (scipy.io.loadmat(mat_path)["y"])
