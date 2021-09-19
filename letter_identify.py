@@ -42,7 +42,7 @@ def addBias(vector):
 
 def Predict(data_list, theta):
     data_list = addBias(data_list) #バイアス追加
-    a2 = sigmoid(addBias(np.dot(theta[0], data_list)))
+    a2 = addBias(sigmoid(np.dot(theta[0], data_list)))
     a3 = sigmoid(np.dot(theta[1], a2))
     return a2, a3
 
