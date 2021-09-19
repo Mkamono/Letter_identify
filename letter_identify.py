@@ -64,6 +64,7 @@ def Backpropagation(x,y,theta,lam, training_set_number):
     training_x = x[:(training_set_number-1)]
     training_y = y[:(training_set_number-1)]
 
+    #matplotlibの処理
     fig, ax1 = plt.subplots()
     ax2 = ax1.twinx()
     ax3 = ax1.twinx()
@@ -74,6 +75,7 @@ def Backpropagation(x,y,theta,lam, training_set_number):
     plt_acc = []
     plt_test_acc = []
     iter_num = []
+    #matplotlibの処理終わり
     
     num_data_list = training_x.shape[0]
     m = num_data_list
@@ -107,12 +109,14 @@ def Backpropagation(x,y,theta,lam, training_set_number):
             J = CostFunction(training_x, training_y, theta, lam)
             acc = accuracy(training_x, training_y, theta)
             test_acc = accuracy(test_x, test_y, theta)
-            
+
+            #matplotlibの処理
             plt_J.append(J)
             plt_acc.append(acc)
             plt_test_acc.append(test_acc)
             iter_num.append(iter)
-            
+            #matplotlibの処理おわり
+
             print(f"{iter} th Cost = ", J)
             if iter % 10 == 0:
                 print("training_accuracy = ", acc, "%", "\ntest_accurancy = ", test_acc, "%")
@@ -120,12 +124,14 @@ def Backpropagation(x,y,theta,lam, training_set_number):
                 print("経過時間 = ", round((end-start), 2), "秒")
             iter += 1
         except KeyboardInterrupt:
-            ax1.plot(iter_num,plt_J ,"b-")
-            ax2.plot(iter_num,plt_acc  ,"r-")
-            ax3.plot(iter_num,plt_test_acc  ,"c-")
-            plt.show()
             break
-    return(CostFunction(x, y, theta, lam))
+    #matplotlibの処理
+    ax1.plot(iter_num,plt_J ,"b-")
+    ax2.plot(iter_num,plt_acc  ,"r-")
+    ax3.plot(iter_num,plt_test_acc  ,"c-")
+    plt.show()
+    #matplotlibの処理おわり
+    return
 
 def calculate_D(theta,DELTA,lam,m):
     D = np.zeros((theta.shape))
