@@ -10,10 +10,10 @@ np.set_printoptions(suppress=True)
 
 def make_theta(outputs):
     theta_list = []
-    a = np.random.rand(25, 401) - 0.5
-    theta_list.append(a*0.24)
-    b = np.random.rand(outputs, 26) - 0.5
-    theta_list.append(b*0.24)
+    theta_0 = np.random.rand(25, 401) - 0.5
+    theta_list.append(theta_0*0.24)
+    theta_1 = np.random.rand(outputs, 26) - 0.5
+    theta_list.append(theta_1*0.24)
     return theta_list
 
 def make_y_array(y_label, y):
@@ -37,7 +37,7 @@ def sigmoid(array):
 
 def addBias(vector):
     vector = np.insert(vector, [0], 1)
-    vector = vector[:, np.newaxis] #次元数が0しかないので追加 https://www.kamishima.net/mlmpyja/nbayes2/shape.html
+    vector = vector[:, np.newaxis] #次元数が0しかないので追加
     return vector
 
 def Predict(data_list, theta):
@@ -45,15 +45,6 @@ def Predict(data_list, theta):
     a2 = sigmoid(addBias(np.dot(theta[0], data_list)))
     a3 = sigmoid(np.dot(theta[1], a2))
     return a2, a3
-
-def calculate_D(theta,DELTA,lam,m):
-    D = np.zeros((theta.shape))
-    for i in range(theta.shape[0]):
-        if i == 0:
-            D[0] = (1/m) * DELTA[0]
-        else:
-            D[i] = (1/m) * (DELTA[i] + (lam * theta[i]))
-    return D
 
 def CostFunction(x,y,theta,lam):
     num_data_list = x.shape[0]
@@ -136,6 +127,15 @@ def Backpropagation(x,y,theta,lam, training_set_number):
             break
     return(CostFunction(x, y, theta, lam))
 
+def calculate_D(theta,DELTA,lam,m):
+    D = np.zeros((theta.shape))
+    for i in range(theta.shape[0]):
+        if i == 0:
+            D[0] = (1/m) * DELTA[0]
+        else:
+            D[i] = (1/m) * (DELTA[i] + (lam * theta[i]))
+    return D
+
 def Refresh_theta(theta,D1,D2):
     theta[0] = theta[0] - D1
     theta[1] = theta[1] - D2
@@ -154,14 +154,12 @@ def accuracy(x, y, theta):
     return percent
 
 
+(outputs, lam, training_set_number) = (10, 0.1, 3000)
+
 dir_path = os.path.dirname(__file__)
 mat_path = os.path.join(dir_path, "ex4data1.mat")
 
-(outputs, lam, training_set_number) = (10, 0.1, 3000)
-theta_list = make_theta(outputs) #theta 初期化
-
 X = (scipy.io.loadmat(mat_path)["X"])
-
 y_label = (scipy.io.loadmat(mat_path)["y"])
 y_label[np.where(y_label == 10)] = 0
 Y = np.zeros((y_label.shape[0], outputs))
@@ -171,13 +169,15 @@ p = np.random.permutation(X.shape[0])#シャッフル
 X = X[p]
 Y = Y[p]
 
-J = CostFunction(X, Y, theta_list, lam)
+theta_list = make_theta(outputs) #theta 初期化
 
-print("X-shape = ", X.shape)
-print("y-shape = ", y_label.shape)
+#前準備完了
+
+print("\nX_shape = ", X.shape)
+print("y_shape = ", y_label.shape)
 for i in range(2):
-    print("theta_%s-shape = " % i, theta_list[i].shape)
-print("Initial Cost = ", J)
+    print("theta_%s_shape = " % i, theta_list[i].shape)
+print("Initial Cost = ", CostFunction(X, Y, theta_list, lam))
 print("initial accuracy = ", accuracy(X, Y, theta_list), "%")
 print("\nctrl + C を押した段階で学習を終了するよ!\n")
 
