@@ -8,6 +8,20 @@ import time
 from matplotlib import pyplot as plt
 np.set_printoptions(suppress=True)
 
+def make_theta(outputs):
+    theta_list = []
+    a = np.random.rand(25, 401) - 0.5
+    theta_list.append(a*0.24)
+    b = np.random.rand(outputs, 26) - 0.5
+    theta_list.append(b*0.24)
+    return theta_list
+
+def make_y_array(y_label, y):
+    for i in range(y_label.shape[0]):
+        j = int(y_label[i])
+        y[i][j] = 1
+    return y
+
 def sigmoid(array):
     (hight, width) = array.shape
     answer = np.empty((hight, width))
@@ -25,7 +39,13 @@ def addBias(vector):
     vector = np.insert(vector, [0], 1)
     vector = vector[:, np.newaxis] #次元数が0しかないので追加 https://www.kamishima.net/mlmpyja/nbayes2/shape.html
     return vector
- 
+
+def Predict(data_list, theta):
+    data_list = addBias(data_list) #バイアス追加
+    a2 = sigmoid(addBias(np.dot(theta[0], data_list)))
+    a3 = sigmoid(np.dot(theta[1], a2))
+    return a2, a3
+
 def calculate_D(theta,DELTA,lam,m):
     D = np.zeros((theta.shape))
     for i in range(theta.shape[0]):
@@ -121,25 +141,6 @@ def Refresh_theta(theta,D1,D2):
     theta[1] = theta[1] - D2
     return
 
-def Predict(data_list, theta):
-    data_list = addBias(data_list) #バイアス追加
-    a2 = sigmoid(addBias(np.dot(theta[0], data_list)))
-    a3 = sigmoid(np.dot(theta[1], a2))
-    return a2, a3
-
-def make_theta(outputs):
-    theta_list = []
-    a = np.random.rand(25, 401) - 0.5
-    theta_list.append(a*0.24)
-    b = np.random.rand(outputs, 26) - 0.5
-    theta_list.append(b*0.24)
-    return theta_list
-
-def make_y_array(y_label, y):
-    for i in range(y_label.shape[0]):
-        j = int(y_label[i])
-        y[i][j] = 1
-
 def accuracy(x, y, theta):
     correct_number = 0
     num_data_list = x.shape[0]
@@ -153,21 +154,18 @@ def accuracy(x, y, theta):
     return percent
 
 
-
 dir_path = os.path.dirname(__file__)
 mat_path = os.path.join(dir_path, "ex4data1.mat")
 
-outputs = 10 #出力ノード数
-lam = 0.1
-training_set_number = 1000 #データセット5000個の内、トレーニングに使うデータ数
+(outputs, lam, training_set_number) = (10, 0.1, 3000)
 theta_list = make_theta(outputs) #theta 初期化
 
 X = (scipy.io.loadmat(mat_path)["X"])
-y_label = (scipy.io.loadmat(mat_path)["y"])
 
-Y = np.zeros((y_label.shape[0], outputs))
+y_label = (scipy.io.loadmat(mat_path)["y"])
 y_label[np.where(y_label == 10)] = 0
-make_y_array(y_label, Y)
+Y = np.zeros((y_label.shape[0], outputs))
+Y = make_y_array(y_label, Y)
 
 p = np.random.permutation(X.shape[0])#シャッフル
 X = X[p]
