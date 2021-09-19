@@ -118,8 +118,13 @@ def Backpropagation(x,y,theta,lam, training_set_number):
             #matplotlibの処理おわり
 
             print(f"{iter} th Cost = ", J)
+            #print(f"{iter} th trainingaccurancy = ", acc, "%")
+            #print(f"{iter} th test accurancy = ", test_acc, "%")
             if iter % 10 == 0:
-                print("training_accuracy = ", acc, "%", "\ntest_accurancy = ", test_acc, "%")
+                #print("Cost = ", J)
+                print("trainingaccurancy = ", acc, "%")
+                print("test accurancy = ", test_acc, "%")
+
                 end = time.time()
                 print("経過時間 = ", round((end-start), 2), "秒")
             iter += 1
@@ -183,8 +188,11 @@ print("\nX_shape = ", X.shape)
 print("y_shape = ", y_label.shape)
 for i in range(2):
     print("theta_%s_shape = " % i, theta_list[i].shape)
+print("training data set = ", training_set_number)
+print("test data set = ", X.shape[0] - training_set_number)
 print("Initial Cost = ", CostFunction(X, Y, theta_list, lam))
 print("initial accuracy = ", accuracy(X, Y, theta_list), "%")
+
 print("\nctrl + C を押した段階で学習を終了するよ!\n")
 
 start = time.time()
