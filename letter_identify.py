@@ -166,6 +166,7 @@ def accuracy(x, y, theta):
 
 
 (outputs, lam, training_set_number) = (10, 0.1, 2000)
+(eta_init, batch_size) = (100, 10)
 
 dir_path = os.path.dirname(__file__)
 mat_path = os.path.join(dir_path, "ex4data1.mat")
@@ -194,6 +195,8 @@ print("Initial Cost = ", CostFunction(X, Y, theta_list, lam))
 print("initial accuracy = ", accuracy(X, Y, theta_list), "%")
 
 print("\nctrl + C を押した段階で学習を終了するよ!\n")
+
+print("これはミニバッチ勾配降下法です/n")
 
 start = time.time()
 
