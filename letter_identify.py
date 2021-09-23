@@ -83,7 +83,7 @@ def Backpropagation(x,y,theta,lam, training_set_number, eta_init, batch_size):
     while True:
         try:
             eta = eta_init/iter
-            for batch in range(int((num_data_list+1)/batch_size)):
+            for batch in range(int((num_data_list)/batch_size)):
                 DELTA_1 = []
                 DELTA_2 = [] #初期化
                 for M in range(batch_size):
