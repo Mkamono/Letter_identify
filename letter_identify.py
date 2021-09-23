@@ -85,13 +85,16 @@ def Backpropagation(x,y,theta,lam, training_set_number, eta, batch_size):
     while True:
         try:
             if batch_size != num_data_list:
+                p = np.random.permutation(training_x.shape[0])#シャッフル
+                training_x = training_x[p]
+                training_y = training_y[p]
+
                 batch_size = div[iter-1]
                 eta = (num_data_list)/batch_size
-                print("refresh", batch_size, eta)
+                print("batch_size = ", batch_size, "    eta_size = ", eta)
             elif eta <= 1:
                 eta = 1
                 batch_size = num_data_list
-                print("full")
             for batch in range(int((num_data_list+1)/batch_size)):
                 DELTA_1 = []
                 DELTA_2 = [] #初期化
