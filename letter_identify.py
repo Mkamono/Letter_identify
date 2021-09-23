@@ -57,12 +57,12 @@ def CostFunction(x,y,theta,lam):
     Cost += (1/2)*lam*(np.sum(theta[0][:, : 400]**2) + np.sum(theta[1][:, : 25]**2))
     return Cost/num_data_list
 
-def Backpropagation(x,y,theta,lam, training_set_number):
+def Backpropagation(x,y,theta,lam, training_set_number, eta, batch_size):
     test_x = x[training_set_number:]
     test_y = y[training_set_number:]
 
-    training_x = x[:(training_set_number-1)]
-    training_y = y[:(training_set_number-1)]
+    training_x = x[:(training_set_number)]
+    training_y = y[:(training_set_number)]
 
     #matplotlibの処理
     fig, ax1 = plt.subplots()
@@ -80,31 +80,44 @@ def Backpropagation(x,y,theta,lam, training_set_number):
     num_data_list = training_x.shape[0]
     m = num_data_list
     iter = 1
+    num = num_data_list
+    div = [i for i in range(1, num+1) if num % i ==0]
     while True:
         try:
-            DELTA_1 = []
-            DELTA_2 = [] #初期化
-            for M in range(num_data_list):
-                x_m = training_x[M]
-                y_m = training_y[M][:, np.newaxis]
-                a1 = addBias(x_m)
-                (a2, a3) = Predict(x_m,theta)
+            if batch_size != num_data_list:
+                batch_size = div[iter-1]
+                eta = (num_data_list)/batch_size
+                print("refresh", batch_size, eta)
+            elif eta <= 1:
+                eta = 1
+                batch_size = num_data_list
+                print("full")
+            for batch in range(int((num_data_list+1)/batch_size)):
+                DELTA_1 = []
+                DELTA_2 = [] #初期化
+                for M in range(batch_size):
+                    
+                    x_m = training_x[batch*batch_size+M-1]
+                    y_m = training_y[batch*batch_size+M-1][:, np.newaxis]
+                    a1 = addBias(x_m)
+                    (a2, a3) = Predict(x_m,theta)
 
-                delta_2 = []
-                delta_3 = []
-                
-                delta_3 = a3 - y_m
-                delta_2 = (np.dot(theta[1].T, delta_3))*((a2)*(1-a2))
-                delta_2 = np.delete(delta_2,0,0) #delta[0]を除去
-                if M == 0:
-                    DELTA_2 = np.dot(delta_3,a2.T)
-                    DELTA_1 = np.dot(delta_2,a1.T)
-                else:
-                    DELTA_2 += np.dot(delta_3,a2.T)
-                    DELTA_1 += np.dot(delta_2,a1.T)
-            D_1 = calculate_D(theta[0],DELTA_1,lam,m)
-            D_2 = calculate_D(theta[1],DELTA_2,lam,m)
-            Refresh_theta(theta, D_1, D_2)
+                    delta_2 = []
+                    delta_3 = []
+                    
+                    delta_3 = a3 - y_m
+                    
+                    delta_2 = (np.dot(theta[1].T, delta_3))*((a2)*(1-a2))
+                    delta_2 = np.delete(delta_2,0,0) #delta[0]を除去
+                    if (M) == 0:
+                        DELTA_2 = np.dot(delta_3,a2.T)
+                        DELTA_1 = np.dot(delta_2,a1.T)
+                    else:
+                        DELTA_2 += np.dot(delta_3,a2.T)
+                        DELTA_1 += np.dot(delta_2,a1.T)
+                D_1 = calculate_D(theta[0],DELTA_1,lam,m)
+                D_2 = calculate_D(theta[1],DELTA_2,lam,m)
+                Refresh_theta(theta, D_1, D_2, eta)
             
             J = CostFunction(training_x, training_y, theta, lam)
             acc = accuracy(training_x, training_y, theta)
@@ -147,9 +160,9 @@ def calculate_D(theta,DELTA,lam,m):
             D[i] = (1/m) * (DELTA[i] + (lam * theta[i]))
     return D
 
-def Refresh_theta(theta,D1,D2):
-    theta[0] = theta[0] - D1
-    theta[1] = theta[1] - D2
+def Refresh_theta(theta,D1,D2, eta):
+    theta[0] = theta[0] - eta*D1
+    theta[1] = theta[1] - eta*D2
     return
 
 def accuracy(x, y, theta):
@@ -165,8 +178,8 @@ def accuracy(x, y, theta):
     return percent
 
 
-(outputs, lam, training_set_number) = (10, 0.1, 2000)
-(eta_init, batch_size) = (100, 10)
+(outputs, lam, training_set_number) = (10, 0.1, 4000)
+(eta_init, batch_size) = (10, 10)
 
 dir_path = os.path.dirname(__file__)
 mat_path = os.path.join(dir_path, "ex4data1.mat")
@@ -196,10 +209,10 @@ print("initial accuracy = ", accuracy(X, Y, theta_list), "%")
 
 print("\nctrl + C を押した段階で学習を終了するよ!\n")
 
-print("これはミニバッチ勾配降下法です/n")
+print("これはミニバッチ勾配降下法です\n")
 
 start = time.time()
 
-Backpropagation(X, Y, theta_list, lam, training_set_number)
+Backpropagation(X, Y, theta_list, lam, training_set_number, eta_init, batch_size)
 
 print("\nlast accuracy = ", accuracy(X, Y, theta_list), "%")
