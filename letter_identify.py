@@ -61,8 +61,8 @@ def Backpropagation(x,y,theta,lam, training_set_number):
     test_x = x[training_set_number:]
     test_y = y[training_set_number:]
 
-    training_x = x[:(training_set_number-1)]
-    training_y = y[:(training_set_number-1)]
+    training_x = x[:(training_set_number)]
+    training_y = y[:(training_set_number)]
 
     #matplotlibの処理
     fig, ax1 = plt.subplots()
