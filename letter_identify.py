@@ -81,6 +81,7 @@ def Backpropagation(x,y,theta,lam, training_set_number, eta=10, batch_size=1):
     m = num_data_list
     iter = 1
     num = num_data_list
+    #for i in range(100):
     while True:
         try:
             if eta > 1:
@@ -133,12 +134,12 @@ def Backpropagation(x,y,theta,lam, training_set_number, eta=10, batch_size=1):
             #matplotlibの処理おわり
 
             print(f"{iter} th Cost = ", J)
-            #print(f"{iter} th trainingaccurancy = ", acc, "%")
-            #print(f"{iter} th test accurancy = ", test_acc, "%")
+            #print(f"{iter} th training accuracy = ", acc, "%")
+            #print(f"{iter} th test accuracy = ", test_acc, "%")
             if iter % 10 == 0:
                 #print("Cost = ", J)
-                print("trainingaccurancy = ", acc, "%")
-                print("test accurancy = ", test_acc, "%")
+                print("training accuracy = ", acc, "%")
+                print("test accuracy = ", test_acc, "%")
 
                 end = time.time()
                 print("経過時間 = ", round((end-start), 2), "秒")
