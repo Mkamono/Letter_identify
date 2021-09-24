@@ -91,7 +91,7 @@ def Backpropagation(x,y,theta,lam, training_set_number, eta, batch_size):
 
                 batch_size = div[iter-1]
                 eta = (num_data_list)/batch_size
-                print("batch_size = ", batch_size, "    eta_size = ", eta)
+                print("batch_size = ", batch_size, "    eta = ", eta)
             elif eta <= 1:
                 eta = 1
                 batch_size = num_data_list
