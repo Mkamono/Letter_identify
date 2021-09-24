@@ -80,8 +80,8 @@ def Backpropagation(x,y,theta,lam, training_set_number):
     num_data_list = training_x.shape[0]
     m = num_data_list
     iter = 1
-    for i in range(100):
-    #while True:
+    #for i in range(100):
+    while True:
         try:
             DELTA_1 = []
             DELTA_2 = [] #初期化
