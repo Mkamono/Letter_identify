@@ -57,7 +57,7 @@ def CostFunction(x,y,theta,lam):
     Cost += (1/2)*lam*(np.sum(theta[0][:, : 400]**2) + np.sum(theta[1][:, : 25]**2))
     return Cost/num_data_list
 
-def Backpropagation(x,y,theta,lam, training_set_number, eta, batch_size):
+def Backpropagation(x,y,theta,lam, training_set_number, eta=10, batch_size=1):
     test_x = x[training_set_number:]
     test_y = y[training_set_number:]
 
@@ -84,18 +84,18 @@ def Backpropagation(x,y,theta,lam, training_set_number, eta, batch_size):
     div = [i for i in range(1, num+1) if num % i ==0]
     while True:
         try:
-            if batch_size != num_data_list:
+            if eta > 1:
                 p = np.random.permutation(training_x.shape[0])#シャッフル
                 training_x = training_x[p]
                 training_y = training_y[p]
 
-                batch_size = div[iter-1]
+                batch_size = int(batch_size * (1 + 1*0.99**(iter-1)))
                 eta = (num_data_list)/batch_size
                 print("batch_size = ", batch_size, "    eta = ", eta)
             elif eta <= 1:
                 eta = 1
                 batch_size = num_data_list
-            for batch in range(int((num_data_list+1)/batch_size)):
+            for batch in range(int((num_data_list+1)//batch_size)):
                 DELTA_1 = []
                 DELTA_2 = [] #初期化
                 for M in range(batch_size):
@@ -181,8 +181,7 @@ def accuracy(x, y, theta):
     return percent
 
 
-(outputs, lam, training_set_number) = (10, 0.1, 4000)
-(eta_init, batch_size) = (10, 10)
+(outputs, lam, training_set_number) = (10, 0.1, 4001)
 
 dir_path = os.path.dirname(__file__)
 mat_path = os.path.join(dir_path, "ex4data1.mat")
@@ -216,6 +215,6 @@ print("これはミニバッチ勾配降下法です\n")
 
 start = time.time()
 
-Backpropagation(X, Y, theta_list, lam, training_set_number, eta_init, batch_size)
+Backpropagation(X, Y, theta_list, lam, training_set_number)
 
 print("\nlast accuracy = ", accuracy(X, Y, theta_list), "%")
