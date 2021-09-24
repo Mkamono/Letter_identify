@@ -80,8 +80,8 @@ def Backpropagation(x,y,theta,lam, training_set_number):
     num_data_list = training_x.shape[0]
     m = num_data_list
     iter = 1
-    #for i in range(100):
-    while True:
+    for i in range(100):
+    #while True:
         try:
             DELTA_1 = []
             DELTA_2 = [] #初期化
@@ -166,7 +166,7 @@ def accuracy(x, y, theta):
     return percent
 
 
-(outputs, lam, training_set_number) = (10, 0.1, 2000)
+(outputs, lam, training_set_number) = (10, 0.1, 4000)
 
 dir_path = os.path.dirname(__file__)
 mat_path = os.path.join(dir_path, "ex4data1.mat")
