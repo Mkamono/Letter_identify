@@ -81,8 +81,8 @@ def Backpropagation(x,y,theta,lam, training_set_number, eta=10, batch_size=1):
     m = num_data_list
     iter = 1
     num = num_data_list
-    #for i in range(100):
-    while True:
+    for i in range(100):
+    #while True:
         try:
             if eta > 1:
                 p = np.random.permutation(training_x.shape[0])#シャッフル
@@ -181,7 +181,7 @@ def accuracy(x, y, theta):
     return percent
 
 
-(outputs, lam, training_set_number) = (10, 0.1, 4001)
+(outputs, lam, training_set_number) = (10, 0.1, 4000)
 
 dir_path = os.path.dirname(__file__)
 mat_path = os.path.join(dir_path, "ex4data1.mat")
