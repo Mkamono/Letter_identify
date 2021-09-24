@@ -81,7 +81,6 @@ def Backpropagation(x,y,theta,lam, training_set_number, eta=10, batch_size=1):
     m = num_data_list
     iter = 1
     num = num_data_list
-    div = [i for i in range(1, num+1) if num % i ==0]
     while True:
         try:
             if eta > 1:
