@@ -80,6 +80,7 @@ def Backpropagation(x,y,theta,lam, training_set_number, eta_init, batch_size):
     num_data_list = training_x.shape[0]
     m = num_data_list
     iter = 1
+    #for i in range(100):
     while True:
         try:
             eta = eta_init/iter
