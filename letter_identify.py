@@ -89,10 +89,10 @@ def Backpropagation(x,y,theta,lam, training_set_number, eta=10, batch_size=1):
                 training_x = training_x[p]
                 training_y = training_y[p]
 
-                batch_size = int(batch_size * (1 + 1*0.99**(iter-1)))
+                batch_size = int((num_data_list**(1/30))**(iter-1)) + 1*(iter-1)
                 eta = (num_data_list)/batch_size
                 print("batch_size = ", batch_size, "    eta = ", eta)
-            elif eta <= 1:
+            elif eta < 1:
                 eta = 1
                 batch_size = num_data_list
             for batch in range(int((num_data_list+1)//batch_size)):
@@ -147,6 +147,8 @@ def Backpropagation(x,y,theta,lam, training_set_number, eta=10, batch_size=1):
         except KeyboardInterrupt:
             break
     #matplotlibの処理
+    ax1.set_ylim([0, plt_J[0]+0.5])
+
     ax1.plot(iter_num,plt_J ,"b-")
     ax2.plot(iter_num,plt_acc  ,"r-")
     ax3.plot(iter_num,plt_test_acc  ,"c-")
@@ -181,7 +183,7 @@ def accuracy(x, y, theta):
     return percent
 
 
-(outputs, lam, training_set_number) = (10, 0.1, 4000)
+(outputs, lam, training_set_number) = (10, 0.1, 4500)
 
 dir_path = os.path.dirname(__file__)
 mat_path = os.path.join(dir_path, "ex4data1.mat")
