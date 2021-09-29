@@ -77,12 +77,11 @@ def Backpropagation(x,y,theta,lam, training_set_number, eta_init, batch_size):
     #for i in range(100):
     while True:
         try:
-            eta = eta_init/iter
             for batch in range(int((num_data_list)/batch_size)):
                 DELTA_1 = []
                 DELTA_2 = [] #初期化
+                eta = eta_init/((batch+1) + (iter * int((num_data_list)/batch_size)))
                 for M in range(batch_size):
-                    
                     x_m = training_x[batch*batch_size+M-1]
                     y_m = training_y[batch*batch_size+M-1][:, np.newaxis]
                     a1 = addBias(x_m)
@@ -172,7 +171,7 @@ def accuracy(x, y, theta):
 
 
 (outputs, lam, training_set_number) = (10, 0.1, 4000)
-(eta_init, batch_size) = (100, 10)
+(eta_init, batch_size) = (100000, 10)
 
 dir_path = os.path.dirname(__file__)
 mat_path = os.path.join(dir_path, "ex4data1.mat")
