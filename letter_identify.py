@@ -78,6 +78,10 @@ def Backpropagation(x,y,theta,lam, training_set_number, eta_init, batch_size):
     while True:
         try:
             for batch in range(int((num_data_list)/batch_size)):
+                p = np.random.permutation(training_x.shape[0])#シャッフル
+                training_x = training_x[p]
+                training_y = training_y[p]
+                
                 DELTA_1 = []
                 DELTA_2 = [] #初期化
                 eta = eta_init/((batch+1) + (iter * int((num_data_list)/batch_size)))
