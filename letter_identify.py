@@ -65,11 +65,7 @@ def Backpropagation(x,y,theta,lam, training_set_number, eta_init, batch_size):
     training_y = y[:(training_set_number)]
 
     #matplotlibの処理
-    fig, ax1 = plt.subplots()
-    ax2 = ax1.twinx()
-    ax3 = ax1.twinx()
-    ax2.set_ylim([0, 100])
-    ax3.set_ylim([0, 100])
+
 
     plt_J = []
     plt_acc = []
@@ -136,6 +132,13 @@ def Backpropagation(x,y,theta,lam, training_set_number, eta_init, batch_size):
         except KeyboardInterrupt:
             break
     #matplotlibの処理
+    fig, ax1 = plt.subplots()
+    ax2 = ax1.twinx()
+    ax3 = ax1.twinx()
+    ax1.set_ylim([0, (plt_J[0] + 0.5)])
+    ax2.set_ylim([0, 100])
+    ax3.set_ylim([0, 100])
+
     ax1.plot(iter_num,plt_J ,"b-")
     ax2.plot(iter_num,plt_acc  ,"r-")
     ax3.plot(iter_num,plt_test_acc  ,"c-")
