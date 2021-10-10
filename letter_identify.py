@@ -67,6 +67,7 @@ def Backpropagation(x,y,theta,lam, training_set_number, eta=10, batch_size=1):
     #matplotlibの処理
 
 
+
     plt_J = []
     plt_acc = []
     plt_test_acc = []
